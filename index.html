@@ -1,0 +1,54 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Margin Calculator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+	
+    <div class="container">
+        <header class="tsit-header">
+  <div class="logo-container">
+    <img src="https://shivacharandatta.github.io/Margincalculator/TSIT_Logo.png" 
+         alt="TSIT Digital Logo">
+  </div>
+  <h2>Margin Calculation Station</h2>
+  <p class="tagline">Profit Starts Here: Crunch Your Margins Today!</p>
+</header>
+
+        <section id="client-selection">
+            <label for="client-dropdown">Select Client:</label>
+            <select id="client-dropdown">
+                <option value="">-- Choose a Client --</option>
+                <option value="Sony">Sony</option>
+                <option value="Diageo">Diageo</option>
+                <option value="Trane Technologies">Trane Technologies</option>
+		<option value="HCL">HCL</option>
+		<option value="Lowes">Lowe's</option>
+		<option value="Capg">Capgemini</option>
+		<option value="Infosys">Infosys</option>
+		<option value="Infosys PT">Infosys PT</option>
+		<option value="Impiger">Impiger</option>
+            </select>
+        </section>
+
+        <section id="input-fields">
+            </section>
+	    <div id="capg-legend" class="hidden" style="margin-top: 20px;"></div>
+<div id="results" class="hidden">
+  <div id="result-output"></div>
+</div>
+
+        <section id="results" class="hidden">
+            <h2>Calculation Results</h2>
+            <div id="result-output">
+                </div>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
