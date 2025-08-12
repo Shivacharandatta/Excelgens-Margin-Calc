@@ -26,9 +26,9 @@ let capgLegend = document.getElementById('capg-legend');
   }
 },
 "TCS": {
-  labels: ["ECTC (Annually)", "Markup %", "Bill Rate Given by Client (Monthly)"],
+  labels: ["Bill Rate Given by Client (Monthly)", "Markup %", "ECTC (Annually)"],
   defaultValues: [null, 32, null],
-  calculate: function (ectc, markup, clientBillRate) {
+  calculate: function (clientBillRate, markup, ectc) {
     const billRate = (ectc + (ectc * markup) / 100) / 12;
     const monthlyMargin = billRate - (ectc / 12);
     const annualMargin = monthlyMargin * 12;
