@@ -27,11 +27,11 @@ let capgLegend = document.getElementById('capg-legend');
 },
 "TCS": {
   labels: ["Bill Rate Given by Client (Monthly)", "Markup %"],
-  defaultValues: [null, 32],
+  defaultValues: [130000, 32],
 
   calculate: function (clientBillRate, markup) {
-    if (typeof clientBillRate !== 'number' || isNaN(clientBillRate)) {
-      throw new Error('clientBillRate must be a number');
+    if (typeof clientBillRate !== "number" || isNaN(clientBillRate)) {
+      return [];
     }
     markup = Number(markup) || 0;
 
@@ -39,19 +39,19 @@ let capgLegend = document.getElementById('capg-legend');
     const monthlyGross = clientBillRate / (1 + markup / 100);
 
     // Salary breakup (monthly)
-    const basic = monthlyGross * 0.50;                       // 50% of gross
-    const da = basic * 0.25;                                 // 25% of basic
-    const hra = (basic + da) * 0.40;                         // 40% of (basic + da)
-    const bonus = 1500;                                      // fixed
+    const basic = monthlyGross * 0.50;
+    const da = basic * 0.25;
+    const hra = (basic + da) * 0.40;
+    const bonus = 1500;
     const specialAllowance = monthlyGross - (basic + da + hra + bonus);
 
     // EPF
-    const epfEmployee = basic * 0.12;                        // 12% of basic
-    const epfEmployer = basic * 0.12;                        // 12% of basic
+    const epfEmployee = basic * 0.12;
+    const epfEmployer = basic * 0.12;
 
     // CTC calculations (match Excel)
-    const monthlyCTC = monthlyGross + epfEmployer;           // Total monthly cost to company
-    const annualCTC = monthlyCTC * 12;                       // Annual CTC = (Gross + Employer EPF) * 12
+    const monthlyCTC = monthlyGross + epfEmployer;
+    const annualCTC = monthlyCTC * 12;
 
     // Net in-hand
     const netInHandMonthly = monthlyGross - epfEmployee;
@@ -59,58 +59,23 @@ let capgLegend = document.getElementById('capg-legend');
     // Margins
     const monthlyMargin = clientBillRate - monthlyGross;
     const annualMargin = monthlyMargin * 12;
-    const monthlyMarginColor = monthlyMargin >= 35000 ? 'green' : 'red';
+    const monthlyMarginColor = monthlyMargin >= 35000 ? "green" : "red";
 
     // Formatter
-    const fmt = v => `₹${Number(v).toFixed(2)}`;
+    const fmt = (v) => `₹${Number(v).toFixed(2)}`;
 
-    // Rows for UI
-    const rows = [
+    // 👉 Return rows directly (this is what your UI expects)
+    return [
       { label: "📦 Client Bill Rate (Monthly)", value: fmt(clientBillRate) },
       { label: "💵 Offered Monthly Gross", value: fmt(monthlyGross) },
-
-      // detailed breakup (monthly)
-      { label: "— Basic (50% of gross)", value: fmt(basic) },
-      { label: "— DA (25% of basic)", value: fmt(da) },
-      { label: "— HRA (40% of Basic+DA)", value: fmt(hra) },
-      { label: "— Bonus (fixed)", value: fmt(bonus) },
-      { label: "— Special Allowance (residual)", value: fmt(specialAllowance) },
-
-      { label: "🔢 Total Gross (Monthly)", value: fmt(monthlyGross) },
-
-      // EPF
-      { label: "🏦 EPF - Employee (12% of basic)", value: fmt(epfEmployee) },
-      { label: "🏦 EPF - Employer (12% of basic)", value: fmt(epfEmployer) },
-
-      // CTC & in-hand
       { label: "📋 Monthly CTC (Gross + Employer EPF)", value: fmt(monthlyCTC) },
       { label: "📈 Annual CTC", value: fmt(annualCTC) },
       { label: "💰 Net In-Hand (Monthly)", value: fmt(netInHandMonthly) },
-
-      // Margins
       { label: "📊 Monthly Margin", value: fmt(monthlyMargin), color: monthlyMarginColor },
       { label: "📊 Annual Margin", value: fmt(annualMargin) }
     ];
-
-    const warning = specialAllowance < 0
-      ? 'Special Allowance is negative — components exceed the entered gross.'
-      : null;
-
-    return {
-      rows,
-      summary: {
-        monthlyGross,
-        monthlyCTC,
-        annualCTC,
-        netInHandMonthly,
-        monthlyMargin,
-        annualMargin
-      },
-      warning
-    };
   }
-}
-,
+},
         "Diageo": {
     labels: ["Bill rate(daily)", "Markup %"],
     defaultValues: [null, 25],
