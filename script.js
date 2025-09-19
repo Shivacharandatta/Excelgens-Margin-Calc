@@ -27,15 +27,14 @@ let capgLegend = document.getElementById('capg-legend');
 },
 "TCS": {
   labels: ["Bill Rate Given by Client (Monthly)", "Markup %"],
-  defaultValues: [null, 32],
+  defaultValues: [130000, 32],
 
   calculate: function (clientBillRate, markup) {
-    // Step 1: From client bill rate & markup, derive annual CTC
-    // CTC = BillRate * 12 * (100 - markup) / 100
-    const annualCTC = clientBillRate * 12 * (100 - markup) / 100;
-    const monthlyGross = annualCTC / 12;
+    // Step 1: Calculate Gross Salary from BillRate and Markup
+    const monthlyGross = clientBillRate / (1 + markup / 100);
+    const annualCTC = monthlyGross * 12;
 
-    // Step 2: Salary breakup from Monthly Gross
+    // Step 2: Salary breakup
     const basic = monthlyGross * 0.50;
     const da = basic * 0.25;
     const hra = (basic + da) * 0.40;
@@ -46,14 +45,15 @@ let capgLegend = document.getElementById('capg-legend');
     const epfEmployee = basic * 0.12;
     const epfEmployer = basic * 0.12;
 
-    // Step 3: Final values
+    // Step 3: Net in-hand
     const netInHandMonthly = totalGross - epfEmployee;
 
+    // Step 4: Margins
     const monthlyMargin = clientBillRate - monthlyGross;
     const annualMargin = monthlyMargin * 12;
     const monthlyMarginColor = monthlyMargin >= 35000 ? 'green' : 'red';
 
-    // Step 4: Prepare rows to display in UI
+    // Step 5: Output rows
     let rows = [
       { label: "📦 Client Bill Rate (Monthly)", value: `₹${clientBillRate.toFixed(2)}` },
       { label: "💵 Offered Monthly Gross", value: `₹${monthlyGross.toFixed(2)}` },
