@@ -67,9 +67,7 @@ let capgLegend = document.getElementById('capg-legend');
     // 👉 Return rows directly (this is what your UI expects)
     return [
       { label: "📦 Client Bill Rate (Monthly)", value: fmt(clientBillRate) },
-      { label: "💵 Offered Monthly Gross", value: fmt(monthlyGross) },
-      { label: "📋 Monthly CTC (Gross + Employer EPF)", value: fmt(monthlyCTC) },
-      { label: "📈 Annual CTC", value: fmt(annualCTC) },
+      { label: "📈 Annual CTC you can offer candidate", value: fmt(annualCTC) },
       { label: "💰 Net In-Hand (Monthly)", value: fmt(netInHandMonthly) },
       { label: "📊 Monthly Margin", value: fmt(monthlyMargin), color: monthlyMarginColor },
       { label: "📊 Annual Margin", value: fmt(annualMargin) }
