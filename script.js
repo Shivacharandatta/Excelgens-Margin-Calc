@@ -30,42 +30,87 @@ let capgLegend = document.getElementById('capg-legend');
   defaultValues: [130000, 32],
 
   calculate: function (clientBillRate, markup) {
-    // Step 1: Calculate Gross Salary from BillRate and Markup
-    const monthlyGross = clientBillRate / (1 + markup / 100);
-    const annualCTC = monthlyGross * 12;
+    if (typeof clientBillRate !== 'number' || isNaN(clientBillRate)) {
+      throw new Error('clientBillRate must be a number');
+    }
+    markup = Number(markup) || 0;
 
-    // Step 2: Salary breakup
-    const basic = monthlyGross * 0.50;
-    const da = basic * 0.25;
-    const hra = (basic + da) * 0.40;
-    const bonus = 1500;
+    // Offered monthly gross derived from bill rate and markup
+    const monthlyGross = clientBillRate / (1 + markup / 100);
+
+    // Salary breakup (monthly)
+    const basic = monthlyGross * 0.50;                       // 50% of gross
+    const da = basic * 0.25;                                 // 25% of basic
+    const hra = (basic + da) * 0.40;                         // 40% of (basic + da)
+    const bonus = 1500;                                      // fixed
     const specialAllowance = monthlyGross - (basic + da + hra + bonus);
 
-    const totalGross = monthlyGross; // by definition
-    const epfEmployee = basic * 0.12;
-    const epfEmployer = basic * 0.12;
+    // EPF
+    const epfEmployee = basic * 0.12;                        // 12% of basic
+    const epfEmployer = basic * 0.12;                        // 12% of basic
 
-    // Step 3: Net in-hand
-    const netInHandMonthly = totalGross - epfEmployee;
+    // CTC calculations (match Excel)
+    const monthlyCTC = monthlyGross + epfEmployer;           // Total monthly cost to company
+    const annualCTC = monthlyCTC * 12;                       // Annual CTC = (Gross + Employer EPF) * 12
 
-    // Step 4: Margins
+    // Net in-hand
+    const netInHandMonthly = monthlyGross - epfEmployee;
+
+    // Margins
     const monthlyMargin = clientBillRate - monthlyGross;
     const annualMargin = monthlyMargin * 12;
     const monthlyMarginColor = monthlyMargin >= 35000 ? 'green' : 'red';
 
-    // Step 5: Output rows
-    let rows = [
-      { label: "📦 Client Bill Rate (Monthly)", value: `₹${clientBillRate.toFixed(2)}` },
-      { label: "💵 Offered Monthly Gross", value: `₹${monthlyGross.toFixed(2)}` },
-      { label: "📊 Annual CTC", value: `₹${annualCTC.toFixed(2)}` },
-      { label: "📊 Monthly Margin", value: `₹${monthlyMargin.toFixed(2)}`, color: monthlyMarginColor },
-      { label: "📊 Annual Margin", value: `₹${annualMargin.toFixed(2)}` },
-      { label: "💰 Net In-Hand (Monthly)", value: `₹${netInHandMonthly.toFixed(2)}` }
+    // Formatter
+    const fmt = v => `₹${Number(v).toFixed(2)}`;
+
+    // Rows for UI
+    const rows = [
+      { label: "📦 Client Bill Rate (Monthly)", value: fmt(clientBillRate) },
+      { label: "💵 Offered Monthly Gross", value: fmt(monthlyGross) },
+
+      // detailed breakup (monthly)
+      { label: "— Basic (50% of gross)", value: fmt(basic) },
+      { label: "— DA (25% of basic)", value: fmt(da) },
+      { label: "— HRA (40% of Basic+DA)", value: fmt(hra) },
+      { label: "— Bonus (fixed)", value: fmt(bonus) },
+      { label: "— Special Allowance (residual)", value: fmt(specialAllowance) },
+
+      { label: "🔢 Total Gross (Monthly)", value: fmt(monthlyGross) },
+
+      // EPF
+      { label: "🏦 EPF - Employee (12% of basic)", value: fmt(epfEmployee) },
+      { label: "🏦 EPF - Employer (12% of basic)", value: fmt(epfEmployer) },
+
+      // CTC & in-hand
+      { label: "📋 Monthly CTC (Gross + Employer EPF)", value: fmt(monthlyCTC) },
+      { label: "📈 Annual CTC", value: fmt(annualCTC) },
+      { label: "💰 Net In-Hand (Monthly)", value: fmt(netInHandMonthly) },
+
+      // Margins
+      { label: "📊 Monthly Margin", value: fmt(monthlyMargin), color: monthlyMarginColor },
+      { label: "📊 Annual Margin", value: fmt(annualMargin) }
     ];
 
-    return rows;
+    const warning = specialAllowance < 0
+      ? 'Special Allowance is negative — components exceed the entered gross.'
+      : null;
+
+    return {
+      rows,
+      summary: {
+        monthlyGross,
+        monthlyCTC,
+        annualCTC,
+        netInHandMonthly,
+        monthlyMargin,
+        annualMargin
+      },
+      warning
+    };
   }
-},
+}
+,
         "Diageo": {
     labels: ["Bill rate(daily)", "Markup %"],
     defaultValues: [null, 25],
