@@ -26,38 +26,42 @@ let capgLegend = document.getElementById('capg-legend');
   }
 },
 "TCS": {
-  labels: ["Bill Rate Given by Client (Monthly)", "Markup %", "ECTC (Annually)"],
-  defaultValues: [null, 32, null],
-  calculate: function (clientBillRate, markup, ectc) {
-    const billRate = (ectc + (ectc * markup) / 100) / 12;
-    const monthlyMargin = billRate - (ectc / 12);
+  labels: ["Bill Rate Given by Client (Monthly)", "Markup %"],
+  defaultValues: [130000, 32],
+
+  calculate: function (clientBillRate, markup) {
+    // Step 1: From client bill rate & markup, derive annual CTC
+    // CTC = BillRate * 12 * (100 - markup) / 100
+    const annualCTC = clientBillRate * 12 * (100 - markup) / 100;
+    const monthlyGross = annualCTC / 12;
+
+    // Step 2: Salary breakup from Monthly Gross
+    const basic = monthlyGross * 0.50;
+    const da = basic * 0.25;
+    const hra = (basic + da) * 0.40;
+    const bonus = 1500;
+    const specialAllowance = monthlyGross - (basic + da + hra + bonus);
+
+    const totalGross = monthlyGross; // by definition
+    const epfEmployee = basic * 0.12;
+    const epfEmployer = basic * 0.12;
+
+    // Step 3: Final values
+    const netInHandMonthly = totalGross - epfEmployee;
+
+    const monthlyMargin = clientBillRate - monthlyGross;
     const annualMargin = monthlyMargin * 12;
-    const monthlyCTC = ectc/12;
     const monthlyMarginColor = monthlyMargin >= 35000 ? 'green' : 'red';
 
+    // Step 4: Prepare rows to display in UI
     let rows = [
-      { label: "💵Billrate (Monthly)", value: `₹${billRate.toFixed(2)}` },
-      { label: "📊Monthly Margin", value: `₹${monthlyMargin.toFixed(2)}`, color: monthlyMarginColor },
-      { label: "📊Annual Margin", value: `₹${annualMargin.toFixed(2)}` }
+      { label: "📦 Client Bill Rate (Monthly)", value: `₹${clientBillRate.toFixed(2)}` },
+      { label: "💵 Offered Monthly Gross", value: `₹${monthlyGross.toFixed(2)}` },
+      { label: "📊 Annual CTC", value: `₹${annualCTC.toFixed(2)}` },
+      { label: "📊 Monthly Margin", value: `₹${monthlyMargin.toFixed(2)}`, color: monthlyMarginColor },
+      { label: "📊 Annual Margin", value: `₹${annualMargin.toFixed(2)}` },
+      { label: "💰 Net In-Hand (Monthly)", value: `₹${netInHandMonthly.toFixed(2)}` }
     ];
-
-    if (clientBillRate && clientBillRate > billRate) {
-      const bufferAmount = clientBillRate - billRate;
-      rows.push({
-        label: "📦Buffer Amount",
-        value: `₹${bufferAmount.toFixed(2)}`,
-	color: 'green'
-      });
-    }
-
-    if (clientBillRate && billRate > clientBillRate) {
-      const exceededAmount = billRate - clientBillRate;
-      rows.push({
-        label: "⚠️Warning",
-        value: `Exceeds Client Rate by ₹${exceededAmount.toFixed(2)}`,
-        color: 'red'
-      });
-    }
 
     return rows;
   }
