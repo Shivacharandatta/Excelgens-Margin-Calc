@@ -27,7 +27,7 @@ let capgLegend = document.getElementById('capg-legend');
 },
 "TCS": {
   labels: ["Bill Rate Given by Client (Monthly)", "Markup %"],
-  defaultValues: [130000, 32],
+  defaultValues: [null, 32],
 
   calculate: function (clientBillRate, markup) {
     // Step 1: From client bill rate & markup, derive annual CTC
