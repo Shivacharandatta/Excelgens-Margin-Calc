@@ -57,7 +57,7 @@ let capgLegend = document.getElementById('capg-legend');
     const netInHandMonthly = monthlyGross - epfEmployee;
 
     // Margins
-    const monthlyMargin = clientBillRate - monthlyGross;
+    const monthlyMargin = clientBillRate - monthlyCTC;
     const annualMargin = monthlyMargin * 12;
     const monthlyMarginColor = monthlyMargin >= 35000 ? "green" : "red";
 
