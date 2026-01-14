@@ -218,31 +218,31 @@ function showCapgLegend(show = true) {
         <td style="border:1px solid #ccc;padding:8px;">12 +</td>
         <td style="border:1px solid #ccc;padding:8px;">D2</td>
         <td style="border:1px solid #ccc;padding:8px;">16,272</td>
-        <td style="border:1px solid #ccc;padding:8px;">28.5 LPA</td>
+        <td style="border:1px solid #ccc;padding:8px;">32.2 LPA</td>
     </tr>
     <tr>
         <td style="border:1px solid #ccc;padding:8px;">10 to 12</td>
         <td style="border:1px solid #ccc;padding:8px;">D1</td>
         <td style="border:1px solid #ccc;padding:8px;">14,180</td>
-        <td style="border:1px solid #ccc;padding:8px;">26 LPA</td>
+        <td style="border:1px solid #ccc;padding:8px;">28 LPA</td>
     </tr>
     <tr>
         <td style="border:1px solid #ccc;padding:8px;">8 to 10</td>
         <td style="border:1px solid #ccc;padding:8px;">C2</td>
         <td style="border:1px solid #ccc;padding:8px;">11,820</td>
-        <td style="border:1px solid #ccc;padding:8px;">21.5 LPA</td>
+        <td style="border:1px solid #ccc;padding:8px;">23.5 LPA</td>
     </tr>
     <tr>
         <td style="border:1px solid #ccc;padding:8px;">6 to 8</td>
         <td style="border:1px solid #ccc;padding:8px;">C1</td>
         <td style="border:1px solid #ccc;padding:8px;">8,490</td>
-        <td style="border:1px solid #ccc;padding:8px;">15 LPA</td>
+        <td style="border:1px solid #ccc;padding:8px;">17 LPA</td>
     </tr>
     <tr>
         <td style="border:1px solid #ccc;padding:8px;">4 to 6</td>
         <td style="border:1px solid #ccc;padding:8px;">B2</td>
         <td style="border:1px solid #ccc;padding:8px;">6,312</td>
-        <td style="border:1px solid #ccc;padding:8px;">11 LPA</td>
+        <td style="border:1px solid #ccc;padding:8px;">12.5 LPA</td>
     </tr>
 </tbody>
         </table>
