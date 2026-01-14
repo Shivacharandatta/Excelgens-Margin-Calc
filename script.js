@@ -129,7 +129,7 @@ let capgLegend = document.getElementById('capg-legend');
 "Capg": {
   labels: ["ECTC", "Experience"],
   calculate: function (ectc, experience) {
-    const dailyrate = (((ectc * 0.1 + ectc)) / 12) / 22;
+    const dailyrate = (((ectc)) / 12) / 22;
     const margin = dailyrate * 0.25 * 22;
     const billRateWithoutTaxes = dailyrate + (margin/22);
     const billRateWithTaxes = billRateWithoutTaxes * 1.18;
