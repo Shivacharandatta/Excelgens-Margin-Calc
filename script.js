@@ -27,12 +27,8 @@ let capgLegend = document.getElementById('capg-legend');
 },
 "Magnit": {
     labels: ["Bill rate (Hourly - SEK)"],
-    defaultValues: [null],
-
-    calculate: function (billRate) {
-			
-
-        return [
+        calculate: function (billRate, margin) {
+	        return [
             { label: "💵 Candidate Hourly Rate", value: `${((billRate - 145) / (1 + 0.58)).toFixed(2)}` },
             { label: "📦 Payroll Cost (58%)", value: `${(candidateHourlyRate * 0.58).toFixed(2)}` },
             { label: "💰 Monthly ECTC (160 Hours)", value: `${(candidateHourlyRate * monthlyHours).toFixed(2)}` }
