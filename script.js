@@ -26,81 +26,42 @@ let capgLegend = document.getElementById('capg-legend');
   }
 },
 "Magnit": {
-    labels: [
-        "Client Bill Rate (Hourly - SEK)",
-        "Candidate Monthly ECTC (SEK)",
-        "Target Margin (Hourly - SEK)"
-    ],
-    defaultValues: [null, null, 145],
+    labels: ["Bill rate (Hourly - SEK)", "Margin"],
+    defaultValues: [null, 145],
 
-    calculate: function (billRate, monthlyECTC, margin) {
+    calculate: function (billRate, margin) {
 
-        const payrollPercentage = 0.58;
+        billRate = Number(billRate);
+        margin = Number(margin);
+
+        if (isNaN(billRate) || isNaN(margin)) {
+            return [];
+        }
+
         const monthlyHours = 160;
+        const candidateHourlyRate =
+            (billRate - margin) / 1.58;
 
-        let rows = [];
+        const payrollCost =
+            candidateHourlyRate * 0.58;
 
-        // Scenario 1: Bill Rate is available
-        if (!isNaN(billRate) && billRate > 0) {
+        const monthlyECTC =
+            candidateHourlyRate * monthlyHours;
 
-            const candidateHourlyRate =
-                (billRate - margin) / (1 + payrollPercentage);
-
-            const payrollCost =
-                candidateHourlyRate * payrollPercentage;
-
-            const calculatedMonthlyECTC =
-                candidateHourlyRate * monthlyHours;
-
-            rows.push(
-                {
-                    label: "💵 Candidate Hourly Rate",
-                    value: `${candidateHourlyRate.toFixed(2)} SEK`
-                },
-                {
-                    label: "📦 Payroll Cost (58%)",
-                    value: `${payrollCost.toFixed(2)} SEK`
-                },
-                {
-                    label: "💰 Candidate Monthly ECTC",
-                    value: `${calculatedMonthlyECTC.toFixed(2)} SEK`
-                }
-            );
-
-            return rows;
-        }
-
-        // Scenario 2: ECTC is available
-        if (!isNaN(monthlyECTC) && monthlyECTC > 0) {
-
-            const candidateHourlyRate =
-                monthlyECTC / monthlyHours;
-
-            const payrollCost =
-                candidateHourlyRate * (1 + payrollPercentage) ;
-
-            const requiredBillRate =
-                candidateHourlyRate + payrollCost + margin;
-
-            rows.push(
-                {
-                    label: "💵 Candidate Hourly Rate",
-                    value: `${candidateHourlyRate.toFixed(2)} SEK`
-                },
-                {
-                    label: "📦 Payroll Cost (58%)",
-                    value: `${payrollCost.toFixed(2)} SEK`
-                },
-                {
-                    label: "🎯 Required Client Bill Rate",
-                    value: `${requiredBillRate.toFixed(2)} SEK`
-                }
-            );
-
-            return rows;
-        }
-
-        return [];
+        return [
+            {
+                label: "💵 Candidate Hourly Rate",
+                value: `${candidateHourlyRate.toFixed(2)} SEK`
+            },
+            {
+                label: "📦 Payroll Cost (58%)",
+                value: `${payrollCost.toFixed(2)} SEK`
+            },
+            {
+                label: "💰 Monthly ECTC (160 Hours)",
+                value: `${monthlyECTC.toFixed(2)} SEK`
+            }
+        ];
     }
 },
 "TCS": {
@@ -253,7 +214,7 @@ let capgLegend = document.getElementById('capg-legend');
 }
 };
 
-    //function convertECTC(value) {
+    function convertECTC(value) {
         value = parseFloat(value);
         if (isNaN(value)) return 0;
         if (value <= 100) return value * 100000;
@@ -262,7 +223,7 @@ let capgLegend = document.getElementById('capg-legend');
         return value * 12;
     }
 
-    //function getECTCUnit(value) {
+    function getECTCUnit(value) {
         value = parseFloat(value);
         if (isNaN(value)) return '';
         if (value <= 100) return 'LPA';
