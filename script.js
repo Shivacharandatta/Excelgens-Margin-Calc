@@ -27,14 +27,27 @@ let capgLegend = document.getElementById('capg-legend');
 },
 "Magnit": {
     labels: ["Bill rate (Hourly - SEK)", "Margin"],
-	defaultValues: [null, 145],
-        calculate: function (billRate, margin) {
-			
-	        return [
-            { label: "💵 Candidate Hourly Rate", value: `${((billRate - margin) / (1 + 0.58)).toFixed(2)}` },
-            { label: "📦 Payroll Cost (58%)", value: `${(candidateHourlyRate * 0.58).toFixed(2)}` },
-            { label: "💰 Monthly ECTC (160 Hours)", value: `${(candidateHourlyRate * monthlyHours).toFixed(2)}` }
-            
+    defaultValues: [null, 145],
+    calculate: function (billRate, margin) {
+
+        const candidateHourlyRate = (billRate - margin) / (1 + 0.58);
+        const payrollCost = candidateHourlyRate * 0.58;
+        const monthlyHours = 160;
+        const monthlyECTC = candidateHourlyRate * monthlyHours;
+
+        return [
+            {
+                label: "💵 Candidate Hourly Rate",
+                value: `${candidateHourlyRate.toFixed(2)}`
+            },
+            {
+                label: "📦 Payroll Cost (58%)",
+                value: `${payrollCost.toFixed(2)}`
+            },
+            {
+                label: "💰 Monthly ECTC (160 Hours)",
+                value: `${monthlyECTC.toFixed(2)}`
+            }
         ];
     }
 },
