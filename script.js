@@ -77,7 +77,7 @@ let capgLegend = document.getElementById('capg-legend');
                 monthlyECTC / monthlyHours;
 
             const payrollCost =
-                candidateHourlyRate * payrollPercentage;
+                candidateHourlyRate * (1 + payrollPercentage) ;
 
             const requiredBillRate =
                 candidateHourlyRate + payrollCost + margin;
