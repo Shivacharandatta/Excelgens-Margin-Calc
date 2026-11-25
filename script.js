@@ -56,7 +56,7 @@ let capgLegend = document.getElementById('capg-legend');
             {
                 label: "💰 Monthly ECTC (160 Hours)", value: `${(monthlyECTC).toFixed(2)}` },
             {
-                label: "📊 Monthly Margin", value: fmt(monthlyMargin) }
+                label: "📊 Monthly Margin", value: fmt(monthlyMargin).toFixed(2)}` }
         ];
     }
 },
