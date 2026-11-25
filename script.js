@@ -31,32 +31,15 @@ let capgLegend = document.getElementById('capg-legend');
 
     calculate: function (billRate) {
 
-        const minimumMargin = 145;
-        const payrollPercentage = 0.58;
-        const monthlyHours = 160;
-
-        // Candidate hourly rate including payroll cost
-        const candidateHourlyRate =
-            (billRate - minimumMargin) / (1 + payrollPercentage);
-
-        // Payroll cost per hour
-        const payrollCost = candidateHourlyRate * payrollPercentage;
-
-        // Monthly ECTC
-        const monthlyECTC = candidateHourlyRate * monthlyHours;
-
-        // Monthly margin
-        const monthlyMargin = minimumMargin * monthlyHours;
 
         return [
             {
-                label: "💵 Candidate Hourly Rate", value: `${(candidateHourlyRate).toFixed(2)}` },
+                label: "💵 Candidate Hourly Rate", value: `${((billRate - 145) / (1 + 0.58)).toFixed(2)}` },
             {
-                label: "📦 Payroll Cost (58%)", value: `${(payrollCost).toFixed(2)}` },
+                label: "📦 Payroll Cost (58%)", value: `${(candidateHourlyRate * 0.58).toFixed(2)}` },
             {
-                label: "💰 Monthly ECTC (160 Hours)", value: `${(monthlyECTC).toFixed(2)}` },
-            {
-                label: "📊 Monthly Margin", value: fmt(monthlyMargin).toFixed(2)}` }
+                label: "💰 Monthly ECTC (160 Hours)", value: `${(candidateHourlyRate * monthlyHours).toFixed(2)}` },
+            
         ];
     }
 },
