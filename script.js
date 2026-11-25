@@ -49,7 +49,7 @@ let capgLegend = document.getElementById('capg-legend');
         const monthlyMargin = minimumMargin * monthlyHours;
 
         const fmt = (value) =>
-            `SEK ${value.toFixed(2)}`;
+            SEK ${value.toFixed(2)}`;
 
         return [
             {
