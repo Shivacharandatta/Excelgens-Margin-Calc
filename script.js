@@ -25,6 +25,53 @@ let capgLegend = document.getElementById('capg-legend');
     ];
   }
 },
+"Magnit": {
+    labels: ["Bill rate (Hourly - SEK)"],
+    defaultValues: [null],
+
+    calculate: function (billRate) {
+
+        const minimumMargin = 145;
+        const payrollPercentage = 0.58;
+        const monthlyHours = 160;
+
+        // Candidate hourly rate including payroll cost
+        const candidateHourlyRate =
+            (billRate - minimumMargin) / (1 + payrollPercentage);
+
+        // Payroll cost per hour
+        const payrollCost = candidateHourlyRate * payrollPercentage;
+
+        // Monthly ECTC
+        const monthlyECTC = candidateHourlyRate * monthlyHours;
+
+        // Monthly margin
+        const monthlyMargin = minimumMargin * monthlyHours;
+
+        const fmt = (value) =>
+            `SEK ${value.toFixed(2)}`;
+
+        return [
+            {
+                label: "💵 Candidate Hourly Rate",
+                value: fmt(candidateHourlyRate)
+            },
+            {
+                label: "📦 Payroll Cost (58%)",
+                value: fmt(payrollCost)
+            },
+            {
+                label: "💰 Monthly ECTC (160 Hours)",
+                value: fmt(monthlyECTC)
+            },
+            {
+                label: "📊 Monthly Margin",
+                value: fmt(monthlyMargin),
+                color: "green"
+            }
+        ];
+    }
+},
 "TCS": {
   labels: ["Bill Rate Given by Client (Monthly)", "Markup %"],
   defaultValues: [null, 32],
