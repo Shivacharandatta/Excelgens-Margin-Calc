@@ -48,27 +48,15 @@ let capgLegend = document.getElementById('capg-legend');
         // Monthly margin
         const monthlyMargin = minimumMargin * monthlyHours;
 
-        const fmt = (value) =>
-            SEK ${value.toFixed(2)}`;
-
         return [
             {
-                label: "💵 Candidate Hourly Rate",
-                value: fmt(candidateHourlyRate)
-            },
+                label: "💵 Candidate Hourly Rate", value: `${(candidateHourlyRate).toFixed(2)}` },
             {
-                label: "📦 Payroll Cost (58%)",
-                value: fmt(payrollCost)
-            },
+                label: "📦 Payroll Cost (58%)", value: `${(payrollCost).toFixed(2)}` },
             {
-                label: "💰 Monthly ECTC (160 Hours)",
-                value: fmt(monthlyECTC)
-            },
+                label: "💰 Monthly ECTC (160 Hours)", value: `${(monthlyECTC).toFixed(2)}` },
             {
-                label: "📊 Monthly Margin",
-                value: fmt(monthlyMargin),
-                color: "green"
-            }
+                label: "📊 Monthly Margin", value: fmt(monthlyMargin) }
         ];
     }
 },
