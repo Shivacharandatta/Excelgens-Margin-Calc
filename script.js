@@ -28,25 +28,38 @@ let capgLegend = document.getElementById('capg-legend');
 "Magnit": {
     labels: ["Bill rate (Hourly - SEK)", "Margin"],
     defaultValues: [null, 145],
+
     calculate: function (billRate, margin) {
 
-        const candidateHourlyRate = (billRate - margin) / (1 + 0.58);
-        const payrollCost = candidateHourlyRate * 0.58;
+        billRate = Number(billRate);
+        margin = Number(margin);
+
+        if (isNaN(billRate) || isNaN(margin)) {
+            return [];
+        }
+
         const monthlyHours = 160;
-        const monthlyECTC = candidateHourlyRate * monthlyHours;
+        const candidateHourlyRate =
+            (billRate - margin) / 1.58;
+
+        const payrollCost =
+            candidateHourlyRate * 0.58;
+
+        const monthlyECTC =
+            candidateHourlyRate * monthlyHours;
 
         return [
             {
                 label: "💵 Candidate Hourly Rate",
-                value: `${candidateHourlyRate.toFixed(2)}`
+                value: `${candidateHourlyRate.toFixed(2)} SEK`
             },
             {
                 label: "📦 Payroll Cost (58%)",
-                value: `${payrollCost.toFixed(2)}`
+                value: `${payrollCost.toFixed(2)} SEK`
             },
             {
                 label: "💰 Monthly ECTC (160 Hours)",
-                value: `${monthlyECTC.toFixed(2)}`
+                value: `${monthlyECTC.toFixed(2)} SEK`
             }
         ];
     }
