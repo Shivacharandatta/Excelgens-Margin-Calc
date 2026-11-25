@@ -253,7 +253,7 @@ let capgLegend = document.getElementById('capg-legend');
 }
 };
 
-    function convertECTC(value) {
+    //function convertECTC(value) {
         value = parseFloat(value);
         if (isNaN(value)) return 0;
         if (value <= 100) return value * 100000;
@@ -262,7 +262,7 @@ let capgLegend = document.getElementById('capg-legend');
         return value * 12;
     }
 
-    function getECTCUnit(value) {
+    //function getECTCUnit(value) {
         value = parseFloat(value);
         if (isNaN(value)) return '';
         if (value <= 100) return 'LPA';
